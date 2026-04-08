@@ -1,0 +1,263 @@
+/* ============================================
+   КАЛЬКУЛЯТОР СТОИМОСТИ
+   ============================================ */
+
+/* Основная сетка интерфейса */
+.calc-interface {
+  display: grid;
+  grid-template-columns: 1.5fr 1fr;
+  gap: 30px;
+  align-items: start;
+}
+
+/* Общие стили панелей */
+.calc-panel {
+  background: var(--bg-card);
+  border: 4px solid var(--cyan);
+  padding: 25px;
+  position: relative;
+  box-shadow: 0 0 20px rgba(0, 240, 255, 0.1);
+}
+
+.calc-total-panel {
+  border-color: var(--pink);
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 0 20px rgba(255, 42, 117, 0.1);
+  position: sticky;
+  top: 120px; /* Прилипает при скролле на десктопе */
+}
+
+.panel-header {
+  margin-bottom: 25px;
+  padding-bottom: 15px;
+  border-bottom: 4px dashed rgba(255, 255, 255, 0.15);
+}
+
+/* Секции полей */
+.calc-row {
+  margin-bottom: 25px;
+}
+
+.calc-row > label {
+  display: block;
+  margin-bottom: 12px;
+  color: var(--text-secondary);
+  font-size: 9px;
+  letter-spacing: 0.5px;
+}
+
+/* Дисплей выбранного тарифа */
+#tariff-display {
+  font-size: 11px;
+  text-align: center;
+  margin-top: 15px;
+  padding: 15px;
+  letter-spacing: 1px;
+  transition: all 0.3s;
+}
+
+/* ============================================
+   ВЫБОР ТАРИФА (КНОПКИ-ПЕРЕКЛЮЧАТЕЛИ)
+   ============================================ */
+.tariff-selector {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+  margin-bottom: 10px;
+}
+
+.tariff-btn {
+  background: var(--bg-darker);
+  border: 3px solid var(--text-secondary);
+  padding: 15px 8px;
+  cursor: pointer;
+  text-align: center;
+  transition: all 0.2s steps(3); /* Пиксельный шаг анимации */
+  font-family: 'Press Start 2P', monospace;
+  position: relative;
+}
+
+.tariff-btn:hover {
+  border-color: var(--cyan);
+  background: rgba(0, 240, 255, 0.05);
+  transform: translateY(-2px);
+}
+
+.tariff-btn.active {
+  border-color: var(--cyan);
+  background: rgba(0, 240, 255, 0.1);
+  box-shadow: 0 0 15px rgba(0, 240, 255, 0.3), inset 0 0 10px rgba(0, 240, 255, 0.1);
+  transform: translateY(-3px);
+}
+
+.tariff-btn .pixel-text.small {
+  display: block;
+  margin-bottom: 8px;
+  color: var(--text-secondary);
+  font-size: 8px;
+}
+
+.tariff-btn.active .pixel-text.small {
+  color: var(--cyan);
+  text-shadow: 0 0 5px var(--cyan);
+}
+
+.tariff-btn .pixel-text.pixel-cyan,
+.tariff-btn .pixel-text.pixel-pink,
+.tariff-btn .pixel-text.pixel-yellow {
+  font-size: 10px;
+}
+
+/* ============================================
+   ЧЕКБОКСЫ ДОПОЛНИТЕЛЬНЫХ МОДУЛЕЙ
+   ============================================ */
+.pixel-checkbox {
+  display: flex;
+  align-items: flex-start;
+  margin-bottom: 12px;
+  cursor: pointer;
+  padding: 12px;
+  border: 2px solid transparent;
+  transition: all 0.2s steps(2);
+  background: rgba(0, 0, 0, 0.2);
+}
+
+.pixel-checkbox:hover {
+  background: rgba(0, 240, 255, 0.05);
+  border-color: rgba(0, 240, 255, 0.3);
+}
+
+.pixel-checkbox input[type="checkbox"] {
+  margin-right: 15px;
+  margin-top: 4px;
+  accent-color: var(--cyan);
+  transform: scale(1.4);
+  cursor: pointer;
+}
+
+.pixel-checkbox span {
+  color: var(--text-secondary);
+  line-height: 1.6;
+}
+
+/* ============================================
+   БЛОК ИТОГОВОЙ СТОИМОСТИ
+   ============================================ */
+.total-screen {
+  background: var(--bg-darker);
+  border: 4px solid var(--pink);
+  padding: 30px 20px;
+  text-align: center;
+  margin-bottom: 25px;
+  box-shadow: inset 0 0 30px rgba(255, 42, 117, 0.15), 0 0 20px rgba(255, 42, 117, 0.1);
+  position: relative;
+  overflow: hidden;
+}
+
+/* Эффект сканирующей линии на экране цены */
+.total-screen::after {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; width: 100%; height: 4px;
+  background: var(--pink);
+  box-shadow: 0 0 10px var(--pink);
+  animation: scanScreen 4s linear infinite;
+  opacity: 0.6;
+  pointer-events: none;
+}
+
+@keyframes scanScreen {
+  0% { top: 0; }
+  100% { top: 100%; }
+}
+
+.screen-label {
+  color: var(--text-secondary);
+  font-size: 8px;
+  margin-bottom: 15px;
+  letter-spacing: 1px;
+}
+
+.pixel-price-display {
+  font-family: 'Press Start 2P', monospace;
+  font-size: 28px;
+  color: var(--yellow);
+  text-shadow: 0 0 10px var(--yellow), 0 0 20px rgba(255, 230, 0, 0.5);
+  margin-bottom: 15px;
+  transition: opacity 0.2s steps(2);
+}
+
+.screen-meta {
+  font-size: 9px;
+  color: var(--text-secondary);
+  border-top: 2px dashed rgba(255,255,255,0.1);
+  padding-top: 10px;
+  margin-top: 5px;
+}
+
+.full-width {
+  width: 100%;
+  display: block;
+  text-align: center;
+  margin-top: auto;
+}
+
+/* ============================================
+   АДАПТИВНОСТЬ (ПЛАНШЕТЫ И ТЕЛЕФОНЫ)
+   ============================================ */
+@media (max-width: 900px) {
+  .calc-interface {
+    grid-template-columns: 1fr;
+    gap: 40px;
+  }
+
+  .calc-total-panel {
+    position: relative;
+    top: 0;
+    order: -1; /* На мобильных итог показываем первым */
+  }
+
+  .tariff-selector {
+    grid-template-columns: 1fr; /* Кнопки в столбик */
+    gap: 10px;
+  }
+
+  /* Делаем кнопки удобнее для пальца */
+  .tariff-btn {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 20px;
+    text-align: left;
+  }
+
+  .tariff-btn .pixel-text.small {
+    margin-bottom: 0;
+  }
+
+  .pixel-price-display {
+    font-size: 22px;
+  }
+}
+
+@media (max-width: 480px) {
+  .calc-panel {
+    padding: 15px;
+    border-width: 3px;
+  }
+
+  .pixel-checkbox {
+    padding: 10px;
+    font-size: 8px;
+  }
+
+  .pixel-price-display {
+    font-size: 18px;
+  }
+
+  .panel-header {
+    margin-bottom: 15px;
+    padding-bottom: 10px;
+  }
+}
