@@ -15,6 +15,17 @@
 </head>
 <body>
 
+    <!-- загрузочный экран -->
+    <div class="boot-screen" id="bootScreen">
+        <div class="boot-content">
+            <div class="boot-logo pixel-text">PIXEL.FORGE v2.0.26</div>
+            <div class="boot-line">INITIALIZING SYSTEM...</div>
+            <div class="boot-progress">
+                <div class="boot-bar" id="bootBar"></div>
+            </div>
+            <div class="boot-text" id="bootText"></div>
+        </div>
+    </div>
   <!-- Сканлайн-оверлей -->
   <div class="scanlines"></div>
   <div class="grid-overlay"></div>
@@ -27,10 +38,9 @@
       </a>
       <nav class="nav" id="nav">
         <ul class="nav__list">
-          <li><a href="#portfolio" class="nav__link pixel-text">Кейсы</a></li>
-          <li><a href="#process" class="nav__link pixel-text">Процесс</a></li>
-          <li><a href="#pricing" class="nav__link pixel-text">Тарифы</a></li>
-          <li><a href="#faq" class="nav__link pixel-text">FAQ</a></li>
+            <li><a href="portfolio.html" class="nav__link pixel-text">Кейсы</a></li>
+            <li><a href="services.html" class="nav__link pixel-text">Услуги</a></li>
+            <li><a href="calculator.html" class="nav__link pixel-text">Калькулятор</a></li>
         </ul>
         <button class="nav__close pixel-text" aria-label="Закрыть меню">[X]</button>
       </nav>
@@ -56,8 +66,8 @@
             <span class="pixel-pink glow">ПРИНОСЯТ</span> ЗАЯВКИ
           </h1>
           <p class="hero__desc pixel-text fade-up">
-            ПРОЕКТИРУЕМ И РАЗРАБАТЫВАЕМ УНИКАЛЬНЫЕ САЙТЫ<br>
-            С РЕТРО-КИБЕРПАНК ЭСТЕТИКОЙ. ФИКСИРОВАННАЯ ЦЕНА.
+            ПРОЕКТИРУЕМ И РАЗРАБАТЫВАЕМ УНИКАЛЬНЫЕ САЙТЫ.<br>
+            С ЛЮБЫМ УРОВНЕМ СЛОЖНОСТИ. ФИКСИРОВАННАЯ ЦЕНА.
           </p>
           <div class="hero__btns fade-up">
             <a href="#pricing" class="btn btn-pixel btn-cyan">
@@ -71,11 +81,11 @@
           <!-- Пиксельная статистика -->
           <div class="pixel-stats fade-up">
             <div class="pixel-stat">
-              <div class="pixel-block">120+</div>
+              <div class="pixel-block">10+</div>
               <span class="pixel-text small">ПРОЕКТОВ</span>
             </div>
             <div class="pixel-stat">
-              <div class="pixel-block">98%</div>
+              <div class="pixel-block">90%</div>
               <span class="pixel-text small">В СРОК</span>
             </div>
             <div class="pixel-stat">
@@ -136,7 +146,7 @@
           </div>
           <div class="pixel-card fade-up">
             <div class="pixel-card-icon">🛡️</div>
-            <h3 class="pixel-text">ГАРАНТИЯ 6 МЕС</h3>
+            <h3 class="pixel-text">ГАРАНТИЯ 1 МЕС</h3>
             <p class="pixel-text small">БЕСПЛАТНЫЕ ПРАВКИ,<br>ТЕХПОДДЕРЖКА</p>
           </div>
         </div>
@@ -232,8 +242,8 @@
               <li class="pixel-text small">▸ ФОРМЫ</li>
               <li class="pixel-text small">▸ 5–7 ДНЕЙ</li>
             </ul>
-            <a href="#contact" class="btn btn-pixel btn-outline-cyan">
-              <span class="pixel-text small">ВЫБРАТЬ</span>
+            <a href="calculator.html?name=START&price=25000&days=7" class="btn btn-pixel btn-outline-cyan">
+                <span class="pixel-text small">ВЫБРАТЬ</span>
             </a>
           </div>
           <div class="price-pixel-card price-pixel-card-pop fade-up">
@@ -248,8 +258,8 @@
               <li class="pixel-text small">▸ SEO + АНАЛИТИКА</li>
               <li class="pixel-text small">▸ 10–14 ДНЕЙ</li>
             </ul>
-            <a href="#contact" class="btn btn-pixel btn-pink">
-              <span class="pixel-text small">ВЫБРАТЬ</span>
+            <a href="calculator.html?name=BUSINESS&price=65000&days=14" class="btn btn-pixel btn-pink">
+                <span class="pixel-text small">ВЫБРАТЬ</span>
             </a>
           </div>
           <div class="price-pixel-card fade-up">
@@ -263,13 +273,15 @@
               <li class="pixel-text small">▸ ПРИОРИТЕТ</li>
               <li class="pixel-text small">▸ ОТ 14 ДНЕЙ</li>
             </ul>
-            <a href="#contact" class="btn btn-pixel btn-outline-cyan">
-              <span class="pixel-text small">ОБСУДИТЬ</span>
+            <a href="calculator.html?name=PREMIUM&price=120000&days=21" class="btn btn-pixel btn-outline-cyan">
+                <span class="pixel-text small">ВЫБРАТЬ</span>
             </a>
           </div>
         </div>
       </div>
     </section>
+
+    
 
     <!-- FAQ -->
     <section class="section" id="faq">
@@ -316,13 +328,17 @@
       </div>
       <div>
         <h4 class="pixel-text small">КОНТАКТЫ</h4>
-        <p><a href="mailto:hello@pixelforge.dev" class="pixel-text small">HELLO@PIXELFORGE.DEV</a></p>
-        <p><a href="#" class="pixel-text small">TELEGRAM</a></p>
+        <p><a href="mailto:dark.tanyans777@gmail.com" class="pixel-text small">dark.tanyans777@gmail.com</a></p>
+        <p><a href="https://t.me/Dark_Tanyan" class="pixel-text small">TELEGRAM</a></p>
+        <p><a href="https://t.me/Baba_klava29" class="pixel-text small">TELEGRAM(МОЁ ВТОРОЕ Я)</a></p>
       </div>
     </div>
     <div class="footer-pixel-border"></div>
   </footer>
 
+    <div class="custom-cursor cursor-dot"></div>
+    <div class="custom-cursor cursor-ring"></div>
   <script src="js/main.js"></script>
+  <script src="js/cursor.js"></script>
 </body>
 </html>

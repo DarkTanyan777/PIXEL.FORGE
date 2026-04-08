@@ -11,6 +11,7 @@
   --bg-alt: #0e0e22;
 
   /* Неоновые акценты */
+  
   --cyan: #00f0ff;
   --cyan-dark: #008899;
   --pink: #ff2a75;
@@ -18,7 +19,6 @@
   --yellow: #ffe600;
   --green: #39ff14;
   --purple: #a855f7;
-
   /* Текст */
   --text-primary: #e0e0ff;
   --text-secondary: #8888aa;
@@ -79,10 +79,10 @@ body {
 /* Неоновое свечение */
 .glow {
   text-shadow:
+    0 0 2px currentColor,
     0 0 5px currentColor,
     0 0 10px currentColor,
-    0 0 20px currentColor,
-    0 0 40px currentColor;
+    0 0 20px currentColor;
   animation: glowPulse 2s ease-in-out infinite alternate;
 }
 
@@ -96,6 +96,75 @@ body {
 .pixel-pink-bg { background: var(--pink) !important; color: var(--bg-dark) !important; }
 .pixel-yellow-bg { background: var(--yellow) !important; color: var(--bg-dark) !important; }
 
+
+/* ============================================
+   css для экрана загрузки
+   ============================================ */
+
+.boot-screen {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background: var(--bg-darker);
+  z-index: 100000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  font-family: 'Press Start 2P', monospace;
+}
+
+.boot-screen.skip {
+  display: none !important;
+}
+
+.boot-content {
+  width: 80%;
+  max-width: 600px;
+}
+
+.boot-logo {
+  font-size: 20px;
+  color: var(--cyan);
+  margin-bottom: 40px;
+  text-align: center;
+}
+
+.boot-line {
+  color: var(--text-secondary);
+  margin-bottom: 20px;
+  font-size: 10px;
+}
+
+.boot-progress {
+  width: 100%;
+  height: 20px;
+  border: 4px solid var(--cyan);
+  padding: 4px;
+  margin-bottom: 20px;
+}
+
+.boot-bar {
+  height: 100%;
+  background: var(--cyan);
+  width: 0%;
+  transition: width 0.3s steps(5);
+  box-shadow: 0 0 10px var(--cyan);
+}
+
+.boot-text {
+  color: var(--pink);
+  font-size: 8px;
+  height: 20px;
+}
+
+.boot-screen.fade-out {
+  animation: bootFade 1s steps(10) forwards;
+}
+
+@keyframes bootFade {
+  to { opacity: 0; visibility: hidden; }
+}
 /* ============================================
    SCANLINES & GRID OVERLAY
    ============================================ */
@@ -299,6 +368,7 @@ body {
 .logo {
   font-size: 14px;
   letter-spacing: 2px;
+  margin-right: 40px;
 }
 
 .nav__list {
@@ -1144,3 +1214,75 @@ body {
     align-items: center;
   }
 }
+
+/* ============================================
+   курсор
+   ============================================ */
+
+/* Скрываем стандартный курсор */
+body, a, button, .btn-pixel, .nav__link, .faq-pixel-question, 
+.pixel-card, .portfolio-pixel, details, input, textarea {
+  cursor: none !important;
+}
+
+/* Базовые стили курсора */
+.custom-cursor {
+  position: fixed;
+  top: 0; left: 0;
+  pointer-events: none;
+  z-index: 99999;
+  transform: translate(-50%, -50%);
+  will-change: transform, left, top;
+}
+
+/* Точка (центр) */
+.cursor-dot {
+  width: 8px;
+  height: 8px;
+  background: var(--cyan);
+  box-shadow: 0 0 8px var(--cyan), 0 0 16px var(--cyan);
+  transition: width 0.15s steps(3), height 0.15s steps(3), background 0.15s;
+}
+
+/* Кольцо (шлейф) */
+.cursor-ring {
+  width: 28px;
+  height: 28px;
+  border: 4px solid var(--pink);
+  border-radius: 0; /* пиксельные углы */
+  box-shadow: 0 0 12px var(--pink);
+  transition: width 0.2s steps(3), height 0.2s steps(3), border-color 0.2s, transform 0.15s;
+}
+
+/* Состояние при наведении на кликабельные элементы */
+body.hovering .cursor-dot {
+  width: 12px;
+  height: 12px;
+  background: var(--pink);
+  box-shadow: 0 0 12px var(--pink), 0 0 24px var(--pink);
+}
+
+body.hovering .cursor-ring {
+  width: 44px;
+  height: 44px;
+  border-color: var(--cyan);
+  transform: translate(-50%, -50%) rotate(45deg); /* ромб при наведении */
+  box-shadow: 0 0 20px var(--cyan);
+}
+
+/* Эффект клика */
+body.clicking .cursor-ring {
+  transform: translate(-50%, -50%) scale(0.7) rotate(45deg);
+  border-color: var(--yellow);
+}
+
+/* Скрываем на тач-устройствах (смартфоны/планшеты) */
+@media (pointer: coarse) {
+  .custom-cursor { display: none !important; }
+  body, a, button, .btn-pixel, .nav__link, .faq-pixel-question, 
+  .pixel-card, .portfolio-pixel, details, input, textarea {
+    cursor: auto !important;
+  }
+}
+
+
