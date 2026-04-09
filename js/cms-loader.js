@@ -336,11 +336,10 @@ const CMSLoader = {
 };
 
 /**
- * Функция инициализации фильтрации портфолио
- * (должна быть глобальной, чтобы CMS Loader мог её вызвать)
+ * Инициализация фильтрации портфолио
  */
 window.initPortfolioFilters = function() {
-  console.log('CMS: инициализация фильтров портфолио...');
+  console.log('CMS: инициализация фильтров...');
   
   const filterBtns = document.querySelectorAll('.filter-btn');
   const projects = document.querySelectorAll('.project-card');
@@ -350,36 +349,53 @@ window.initPortfolioFilters = function() {
     return;
   }
 
+  // Сбрасываем все обработчики (клонированием кнопок)
   filterBtns.forEach(btn => {
-    // Удаляем старые обработчики (клонированием)
     const newBtn = btn.cloneNode(true);
     btn.parentNode.replaceChild(newBtn, btn);
-    
-    newBtn.addEventListener('click', function() {
-      filterBtns.forEach(b => b.classList.remove('active'));
+  });
+
+  // Получаем НОВЫЕ кнопки после клонирования
+  const newFilterBtns = document.querySelectorAll('.filter-btn');
+  
+  newFilterBtns.forEach(btn => {
+    btn.addEventListener('click', function() {
+      // Убираем active со всех кнопок
+      newFilterBtns.forEach(b => b.classList.remove('active'));
+      // Добавляем active на нажатую
       this.classList.add('active');
       
       const filter = this.dataset.filter;
-      console.log('CMS: фильтр:', filter);
+      console.log('CMS: фильтр активирован:', filter);
       
+      // Фильтруем проекты
       projects.forEach(card => {
         const cat = card.dataset.category;
         const shouldShow = (filter === 'all' || filter === cat);
-        card.style.display = shouldShow ? '' : 'none';
         
-        // Анимация появления
+        // Сбрасываем все стили
+        card.style.display = '';
+        card.style.opacity = '';
+        card.style.transition = '';
+        
         if (shouldShow) {
+          // Показываем с анимацией
           card.style.opacity = '0';
+          card.style.display = '';
+          
           setTimeout(() => {
-            card.style.transition = 'opacity 0.3s';
+            card.style.transition = 'opacity 0.3s ease';
             card.style.opacity = '1';
           }, 50);
+        } else {
+          // Скрываем без анимации
+          card.style.display = 'none';
         }
       });
     });
   });
   
-  console.log('CMS: фильтры инициализированы');
+  console.log('CMS: фильтры готовы');
 };
 
 /**
