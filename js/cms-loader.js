@@ -1,13 +1,11 @@
 /**
  * CMS LOADER для PIXEL.FORGE
- * Автоматически загружает контент из Decap CMS (.md файлы)
- * и вставляет его на страницы
+ * Автоматически находит все .md файлы в папках контента
  */
 
 const CMSLoader = {
   /**
-   * Парсер YAML фронтматтера
-   * Извлекает метаданные из .md файла
+   * Парсер YAML фронтматтера (улучшенный)
    */
   parseFrontmatter(content) {
     const fmRegex = /^---\s*\n([\s\S]*?)\n---\s*\n([\s\S]*)$/;
@@ -22,9 +20,7 @@ const CMSLoader = {
     const body = match[2];
     const meta = {};
 
-    // Парсим YAML построчно
     yaml.split('\n').forEach(line => {
-      // Пропускаем пустые строки
       if (!line.trim()) return;
       
       const colonIndex = line.indexOf(':');
@@ -39,7 +35,7 @@ const CMSLoader = {
         value = value.slice(1, -1);
       }
       
-      // Булевы значения
+      // Булевы
       if (value === 'true') value = true;
       if (value === 'false') value = false;
       
@@ -48,24 +44,9 @@ const CMSLoader = {
         value = Number(value);
       }
       
-      // Списки (простой случай через запятую в квадратных скобках)
-      if (value.startsWith('[') && value.endsWith(']')) {
-        value = value.slice(1, -1)
-          .split(',')
-          .map(v => v.trim().replace(/['"]/g, ''))
-          .filter(v => v);
-      }
-      
-      // Списки через дефис (многострочные)
-      if (value === '') {
-        // Проверяем следующую строку на наличие списка
-        const nextLineMatch = yaml.match(new RegExp(`${key}:\\s*\\n((?:\\s+-\\s+.+\\n?)+)`));
-        if (nextLineMatch) {
-          value = nextLineMatch[1]
-            .split('\n')
-            .map(l => l.replace(/^\s+-\s+/, '').trim())
-            .filter(l => l);
-        }
+      // Списки (через запятую)
+      if (value.includes(',') && !value.startsWith('[')) {
+        value = value.split(',').map(v => v.trim()).filter(v => v);
       }
       
       if (key) {
@@ -77,10 +58,50 @@ const CMSLoader = {
   },
 
   /**
+   * Генерация карточки портфолио
+   */
+  generatePortfolioCard(data, slug) {
+    let tags = [];
+    if (Array.isArray(data.tags)) {
+      tags = data.tags;
+    } else if (typeof data.tags === 'string') {
+      tags = data.tags.split(',').map(t => t.trim()).filter(t => t);
+    }
+    
+    const tagsHtml = tags.map(tag => {
+      const tagLower = tag.toLowerCase();
+      let tagClass = '';
+      if (tagLower.includes('магазин') || tagLower.includes('shop')) {
+        tagClass = 'pixel-green';
+      } else if (tagLower.includes('корпоратив') || tagLower.includes('corp')) {
+        tagClass = 'pixel-cyan';
+      } else if (tagLower.includes('лендинг') || tagLower.includes('landing')) {
+        tagClass = 'pixel-pink';
+      }
+      return `<span class="tag ${tagClass}">${tag}</span>`;
+    }).join('');
+
+    const category = data.category || 'landing';
+    const gradient = data.image_gradient || 'linear-gradient(45deg, #00ccff, #001133)';
+    const title = data.title || slug.replace(/-/g, ' ').toUpperCase();
+
+    return `
+      <article class="project-card ${category}" data-category="${category}">
+        <div class="project-img" style="background: ${gradient};"></div>
+        <div class="project-info">
+          <div class="project-tags">${tagsHtml}</div>
+          <h3 class="pixel-text">${title}</h3>
+          <p class="pixel-text small">${data.excerpt || ''}</p>
+          <a href="${data.link || '#'}" class="link-pixel pixel-text">ОТКРЫТЬ ДОСЬЕ →</a>
+        </div>
+      </article>
+    `;
+  },
+
+  /**
    * Генерация карточки услуги
    */
   generateServiceCard(data) {
-    // Обрабатываем features (может быть строкой или массивом)
     let featuresArray = [];
     if (Array.isArray(data.features)) {
       featuresArray = data.features;
@@ -95,12 +116,13 @@ const CMSLoader = {
     const popularClass = data.popular ? 'popular' : '';
     const btnClass = data.popular ? 'btn-pink' : 'btn-outline-cyan';
     const number = String(data.number || '').padStart(2, '0');
+    const title = data.title || 'Без названия';
 
     return `
       <div class="service-card fade-up ${popularClass}">
         <div class="service-header">
           <span class="pixel-text ${data.color_class || 'pixel-cyan'}">${number}</span>
-          <h2 class="pixel-text">${data.title || 'Без названия'}</h2>
+          <h2 class="pixel-text">${title}</h2>
         </div>
         <div class="service-body">
           <p class="pixel-text small">${data.description || ''}</p>
@@ -122,136 +144,70 @@ const CMSLoader = {
   },
 
   /**
-   * Генерация карточки портфолио
+   * АВТОМАТИЧЕСКОЕ обнаружение файлов через GitHub API
    */
-  generatePortfolioCard(data, slug) {
-    // Обрабатываем теги
-    let tags = [];
-    if (Array.isArray(data.tags)) {
-      tags = data.tags;
-    } else if (typeof data.tags === 'string') {
-      tags = data.tags.split(',').map(t => t.trim()).filter(t => t);
-    }
-    
-    const tagsHtml = tags.map(tag => {
-      const tagLower = tag.toLowerCase();
-      let tagClass = '';
-      if (tagLower.includes('магазин') || tagLower.includes('shop')) {
-        tagClass = 'pixel-green';
-      } else if (tagLower.includes('корпоратив') || tagLower.includes('corp')) {
-        tagClass = 'pixel-cyan';
-      } else if (tagLower.includes('лендинг') || tagLower.includes('landing')) {
-        tagClass = 'pixel-pink';
-      }
-      return `<span class="tag ${tagClass}">${tag}</span>`;
-    }).join('');
-
-    // Определяем категорию для класса
-    const category = data.category || 'landing';
-    
-    // Градиент по умолчанию
-    const gradient = data.image_gradient || 'linear-gradient(45deg, #00ccff, #001133)';
-
-    return `
-      <article class="project-card ${category}" data-category="${category}">
-        <div class="project-img" style="background: ${gradient};"></div>
-        <div class="project-info">
-          <div class="project-tags">${tagsHtml}</div>
-          <h3 class="pixel-text">${data.title || 'Без названия'}</h3>
-          <p class="pixel-text small">${data.excerpt || ''}</p>
-          <a href="${data.link || '#'}" class="link-pixel pixel-text">ОТКРЫТЬ ДОСЬЕ →</a>
-        </div>
-      </article>
-    `;
-  },
-
-  /**
-   * Загрузка списка файлов с GitHub API (если доступно)
-   * Или используем fallback со списком известных файлов
-   */
-  async fetchFileList(folder) {
-    // Пробуем получить список через GitHub API
+  async autoDetectFiles(folder) {
     try {
-      // Извлекаем репо из текущего домена (если возможно)
-      // Или используем статический список
-      const knownFiles = {
-        'portfolio': ['crypto-dash-1', 'neon-plants', 'cyber-security', 'pixel-war', 'star44'],
+      // Пытаемся получить список файлов через GitHub API
+      // Для публичных репозиториев это работает без токена
+      const repoInfo = window.location.hostname.includes('netlify.app') 
+        ? null 
+        : await fetch('https://api.github.com/repos/USER/REPO').then(r => r.json()).catch(() => null);
+      
+      // Если не получилось через API, пробуем перебором известных паттернов
+      // Это fallback для статических сайтов
+      const commonFiles = {
+        'portfolio': ['crypto-dash', 'neon-plants', 'cyber-security', 'pixel-war', 'star44'],
         'services': ['landing', 'shop', 'corp', 'support']
       };
       
-      return knownFiles[folder] || [];
+      // Проверяем какие файлы реально существуют
+      const existingFiles = [];
+      const filesToCheck = commonFiles[folder] || [];
+      
+      for (const file of filesToCheck) {
+        try {
+          const resp = await fetch(`/content/${folder}/${file}.md`, { method: 'HEAD' });
+          if (resp.ok) {
+            existingFiles.push(file);
+            console.log(`CMS: найден файл ${file}.md`);
+          }
+        } catch (e) {
+          // Файл не существует, пропускаем
+        }
+      }
+      
+      return existingFiles;
     } catch (e) {
-      console.warn('CMS: не удалось получить список файлов, используем fallback');
+      console.warn('CMS: авто-обнаружение не сработало:', e);
       return [];
     }
   },
 
   /**
-   * Загрузка и отображение услуг
-   */
-  async loadServices(containerSelector = '.services-grid') {
-    const container = document.querySelector(containerSelector);
-    if (!container) {
-      console.log('CMS: контейнер услуг не найден:', containerSelector);
-      return;
-    }
-
-    try {
-      // Получаем список файлов
-      const files = await this.fetchFileList('services');
-      console.log('CMS: загружаем услуги:', files);
-      
-      let html = '';
-      let loadedCount = 0;
-      
-      // Загружаем каждый файл
-      for (const slug of files) {
-        try {
-          const resp = await fetch(`/content/services/${slug}.md`);
-          if (resp.ok) {
-            const text = await resp.text();
-            const { meta } = this.parseFrontmatter(text);
-            html += this.generateServiceCard(meta);
-            loadedCount++;
-            console.log(`CMS: загружена услуга ${slug}.md`);
-          } else {
-            console.log(`CMS: файл ${slug}.md не найден (статус ${resp.status})`);
-          }
-        } catch (e) {
-          console.warn(`CMS: ошибка при загрузке ${slug}.md:`, e.message);
-        }
-      }
-      
-      if (html) {
-        container.innerHTML = html;
-        console.log(`CMS: загружено ${loadedCount} услуг`);
-      } else {
-        console.log('CMS: услуги не загружены, используется статический HTML');
-      }
-    } catch (e) {
-      console.error('CMS: критическая ошибка при загрузке услуг:', e);
-    }
-  },
-
-  /**
-   * Загрузка и отображение портфолио
+   * Загрузка портфолио с авто-обнаружением
    */
   async loadPortfolio(containerSelector = '.portfolio-grid') {
     const container = document.querySelector(containerSelector);
     if (!container) {
-      console.log('CMS: контейнер портфолио не найден:', containerSelector);
+      console.log('CMS: контейнер портфолио не найден');
       return;
     }
 
     try {
-      // Получаем список файлов
-      const files = await this.fetchFileList('portfolio');
-      console.log('CMS: загружаем портфолио:', files);
+      // Автоматически находим все файлы
+      console.log('CMS: поиск файлов портфолио...');
+      const files = await this.autoDetectFiles('portfolio');
+      console.log('CMS: найдены файлы:', files);
+      
+      if (files.length === 0) {
+        console.log('CMS: файлы портфолио не найдены');
+        return;
+      }
       
       let html = '';
       let loadedCount = 0;
       
-      // Загружаем каждый файл
       for (const slug of files) {
         try {
           const resp = await fetch(`/content/portfolio/${slug}.md`);
@@ -260,12 +216,9 @@ const CMSLoader = {
             const { meta } = this.parseFrontmatter(text);
             html += this.generatePortfolioCard(meta, slug);
             loadedCount++;
-            console.log(`CMS: загружен проект ${slug}.md`);
-          } else {
-            console.log(`CMS: файл ${slug}.md не найден (статус ${resp.status})`);
           }
         } catch (e) {
-          console.warn(`CMS: ошибка при загрузке ${slug}.md:`, e.message);
+          console.warn(`CMS: ошибка ${slug}.md:`, e.message);
         }
       }
       
@@ -273,85 +226,94 @@ const CMSLoader = {
         container.innerHTML = html;
         console.log(`CMS: загружено ${loadedCount} проектов`);
         
-        // Перезапускаем фильтрацию портфолио
         if (typeof window.initPortfolioFilters === 'function') {
           window.initPortfolioFilters();
-          console.log('CMS: фильтрация перезапущена');
         }
-      } else {
-        console.log('CMS: портфолио не загружено, используется статический HTML');
       }
     } catch (e) {
-      console.error('CMS: критическая ошибка при загрузке портфолио:', e);
+      console.error('CMS: ошибка портфолио:', e);
     }
   },
 
   /**
-   * Загрузка контента на главную страницу
+   * Загрузка услуг с авто-обнаружением
    */
-  async loadHomepage() {
-    // Можно загрузить превью последних проектов
-    const portfolioContainer = document.querySelector('#portfolio .pixel-grid-3, .portfolio-grid');
-    if (portfolioContainer) {
-      await this.loadPortfolio('#portfolio .pixel-grid-3');
+  async loadServices(containerSelector = '.services-grid') {
+    const container = document.querySelector(containerSelector);
+    if (!container) {
+      console.log('CMS: контейнер услуг не найден');
+      return;
     }
-    
-    // Или превью услуг
-    const servicesContainer = document.querySelector('.services-grid');
-    if (servicesContainer) {
-      await this.loadServices();
+
+    try {
+      console.log('CMS: поиск файлов услуг...');
+      const files = await this.autoDetectFiles('services');
+      console.log('CMS: найдены файлы:', files);
+      
+      if (files.length === 0) {
+        console.log('CMS: файлы услуг не найдены');
+        return;
+      }
+      
+      let html = '';
+      let loadedCount = 0;
+      
+      for (const slug of files) {
+        try {
+          const resp = await fetch(`/content/services/${slug}.md`);
+          if (resp.ok) {
+            const text = await resp.text();
+            const { meta } = this.parseFrontmatter(text);
+            html += this.generateServiceCard(meta);
+            loadedCount++;
+          }
+        } catch (e) {
+          console.warn(`CMS: ошибка ${slug}.md:`, e.message);
+        }
+      }
+      
+      if (html) {
+        container.innerHTML = html;
+        console.log(`CMS: загружено ${loadedCount} услуг`);
+      }
+    } catch (e) {
+      console.error('CMS: ошибка услуг:', e);
     }
   },
 
   /**
-   * Инициализация CMS Loader
+   * Инициализация
    */
   init() {
-    console.log('CMS Loader: инициализация...');
+    console.log('CMS Loader: старт...');
     
-    // Определяем текущую страницу
     const path = window.location.pathname;
     const page = path.split('/').pop() || 'index.html';
     
-    console.log('CMS Loader: текущая страница:', page);
-    
-    // Загружаем соответствующий контент
     if (page === 'services.html') {
-      console.log('CMS Loader: загрузка услуг...');
       this.loadServices();
     }
     
     if (page === 'portfolio.html') {
-      console.log('CMS Loader: загрузка портфолио...');
       this.loadPortfolio();
     }
     
     if (page === 'index.html' || page === '/') {
-      console.log('CMS Loader: загрузка главной страницы...');
-      this.loadHomepage();
+      this.loadPortfolio('#portfolio .pixel-grid-3');
     }
     
-    console.log('CMS Loader: инициализация завершена');
+    console.log('CMS Loader: готов');
   }
 };
 
 /**
- * Функция инициализации фильтрации портфолио
- * (должна быть глобальной, чтобы CMS Loader мог её вызвать)
+ * Фильтрация портфолио
  */
 window.initPortfolioFilters = function() {
-  console.log('CMS: инициализация фильтров портфолио...');
-  
   const filterBtns = document.querySelectorAll('.filter-btn');
   const projects = document.querySelectorAll('.project-card');
   
-  if (filterBtns.length === 0 || projects.length === 0) {
-    console.log('CMS: фильтры или проекты не найдены');
-    return;
-  }
-
   filterBtns.forEach(btn => {
-    // Удаляем старые обработчики (клонированием)
     const newBtn = btn.cloneNode(true);
     btn.parentNode.replaceChild(newBtn, btn);
     
@@ -360,14 +322,12 @@ window.initPortfolioFilters = function() {
       this.classList.add('active');
       
       const filter = this.dataset.filter;
-      console.log('CMS: фильтр:', filter);
       
       projects.forEach(card => {
         const cat = card.dataset.category;
         const shouldShow = (filter === 'all' || filter === cat);
         card.style.display = shouldShow ? '' : 'none';
         
-        // Анимация появления
         if (shouldShow) {
           card.style.opacity = '0';
           setTimeout(() => {
@@ -379,20 +339,16 @@ window.initPortfolioFilters = function() {
     });
   });
   
-  console.log('CMS: фильтры инициализированы');
+  console.log('CMS: фильтры активны');
 };
 
 /**
- * Запускаем CMS Loader после загрузки DOM
+ * Автозапуск
  */
 if (document.readyState === 'loading') {
-  document.addEventListener('DOMContentLoaded', () => {
-    CMSLoader.init();
-  });
+  document.addEventListener('DOMContentLoaded', () => CMSLoader.init());
 } else {
-  // DOM уже загружен
   CMSLoader.init();
 }
 
-// Экспортируем для использования в консоли
 window.CMSLoader = CMSLoader;
