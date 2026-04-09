@@ -1,60 +1,106 @@
 /**
  * CMS LOADER для PIXEL.FORGE
- * Загружает контент из Decap CMS и вставляет в нужные места
+ * Автоматически загружает контент из Decap CMS (.md файлы)
+ * и вставляет его на страницы
  */
 
 const CMSLoader = {
-  // Простой парсер YAML фронтматтера
+  /**
+   * Парсер YAML фронтматтера
+   * Извлекает метаданные из .md файла
+   */
   parseFrontmatter(content) {
     const fmRegex = /^---\s*\n([\s\S]*?)\n---\s*\n([\s\S]*)$/;
     const match = content.match(fmRegex);
-    if (!match) return { meta: {}, body: content };
+    
+    if (!match) {
+      console.warn('CMS: фронтматтер не найден');
+      return { meta: {}, body: content };
+    }
 
     const yaml = match[1];
     const body = match[2];
     const meta = {};
 
-    // Простой YAML парсер (для базовых типов)
+    // Парсим YAML построчно
     yaml.split('\n').forEach(line => {
-      const [key, ...valParts] = line.split(':');
-      if (!key?.trim()) return;
-      let value = valParts.join(':').trim();
+      // Пропускаем пустые строки
+      if (!line.trim()) return;
+      
+      const colonIndex = line.indexOf(':');
+      if (colonIndex === -1) return;
+      
+      const key = line.slice(0, colonIndex).trim();
+      let value = line.slice(colonIndex + 1).trim();
       
       // Убираем кавычки
       if ((value.startsWith('"') && value.endsWith('"')) || 
           (value.startsWith("'") && value.endsWith("'"))) {
         value = value.slice(1, -1);
       }
-      // Булевы
+      
+      // Булевы значения
       if (value === 'true') value = true;
       if (value === 'false') value = false;
+      
       // Числа
-      if (!isNaN(value) && value !== '') value = Number(value);
-      // Списки (простой случай)
-      if (value.startsWith('[') && value.endsWith(']')) {
-        value = value.slice(1, -1).split(',').map(v => v.trim().replace(/['"]/g, ''));
+      if (!isNaN(value) && value !== '' && value !== null) {
+        value = Number(value);
       }
       
-      meta[key.trim()] = value;
+      // Списки (простой случай через запятую в квадратных скобках)
+      if (value.startsWith('[') && value.endsWith(']')) {
+        value = value.slice(1, -1)
+          .split(',')
+          .map(v => v.trim().replace(/['"]/g, ''))
+          .filter(v => v);
+      }
+      
+      // Списки через дефис (многострочные)
+      if (value === '') {
+        // Проверяем следующую строку на наличие списка
+        const nextLineMatch = yaml.match(new RegExp(`${key}:\\s*\\n((?:\\s+-\\s+.+\\n?)+)`));
+        if (nextLineMatch) {
+          value = nextLineMatch[1]
+            .split('\n')
+            .map(l => l.replace(/^\s+-\s+/, '').trim())
+            .filter(l => l);
+        }
+      }
+      
+      if (key) {
+        meta[key] = value;
+      }
     });
 
     return { meta, body };
   },
 
-  // Генерация карточки услуги (точь-в-точь как в services.html)
+  /**
+   * Генерация карточки услуги
+   */
   generateServiceCard(data) {
-    const featuresHtml = (data.features || []).map(f => 
+    // Обрабатываем features (может быть строкой или массивом)
+    let featuresArray = [];
+    if (Array.isArray(data.features)) {
+      featuresArray = data.features;
+    } else if (typeof data.features === 'string') {
+      featuresArray = data.features.split('\n').map(f => f.trim()).filter(f => f);
+    }
+    
+    const featuresHtml = featuresArray.map(f => 
       `<li class="pixel-text small">▸ ${f}</li>`
     ).join('');
 
     const popularClass = data.popular ? 'popular' : '';
     const btnClass = data.popular ? 'btn-pink' : 'btn-outline-cyan';
+    const number = String(data.number || '').padStart(2, '0');
 
     return `
       <div class="service-card fade-up ${popularClass}">
         <div class="service-header">
-          <span class="pixel-text ${data.color_class || 'pixel-cyan'}">${String(data.number || '').padStart(2, '0')}</span>
-          <h2 class="pixel-text">${data.title || ''}</h2>
+          <span class="pixel-text ${data.color_class || 'pixel-cyan'}">${number}</span>
+          <h2 class="pixel-text">${data.title || 'Без названия'}</h2>
         </div>
         <div class="service-body">
           <p class="pixel-text small">${data.description || ''}</p>
@@ -63,7 +109,9 @@ const CMSLoader = {
           </ul>
           <div class="service-price">
             <span class="pixel-text small">ОТ</span>
-            <span class="pixel-text ${data.price_color || 'pixel-yellow'}">${data.price?.toLocaleString('ru-RU') || '0'}₽</span>
+            <span class="pixel-text ${data.price_color || 'pixel-yellow'}">
+              ${data.price ? Number(data.price).toLocaleString('ru-RU') : '0'}₽
+            </span>
           </div>
           <a href="${data.calc_link || '#'}" class="btn btn-pixel ${btnClass} full-width">
             <span class="pixel-text small">ВЫБРАТЬ</span>
@@ -73,21 +121,43 @@ const CMSLoader = {
     `;
   },
 
-  // Генерация карточки портфолио (для portfolio.html)
+  /**
+   * Генерация карточки портфолио
+   */
   generatePortfolioCard(data, slug) {
-    const tags = (data.tags || '').split(',').map(t => t.trim()).filter(Boolean);
+    // Обрабатываем теги
+    let tags = [];
+    if (Array.isArray(data.tags)) {
+      tags = data.tags;
+    } else if (typeof data.tags === 'string') {
+      tags = data.tags.split(',').map(t => t.trim()).filter(t => t);
+    }
+    
     const tagsHtml = tags.map(tag => {
-      const tagClass = tag.toLowerCase().includes('магазин') ? 'pixel-green' : 
-                      tag.toLowerCase().includes('корпоратив') ? 'pixel-cyan' : '';
+      const tagLower = tag.toLowerCase();
+      let tagClass = '';
+      if (tagLower.includes('магазин') || tagLower.includes('shop')) {
+        tagClass = 'pixel-green';
+      } else if (tagLower.includes('корпоратив') || tagLower.includes('corp')) {
+        tagClass = 'pixel-cyan';
+      } else if (tagLower.includes('лендинг') || tagLower.includes('landing')) {
+        tagClass = 'pixel-pink';
+      }
       return `<span class="tag ${tagClass}">${tag}</span>`;
     }).join('');
 
+    // Определяем категорию для класса
+    const category = data.category || 'landing';
+    
+    // Градиент по умолчанию
+    const gradient = data.image_gradient || 'linear-gradient(45deg, #00ccff, #001133)';
+
     return `
-      <article class="project-card ${data.category || ''}" data-category="${data.category || ''}">
-        <div class="project-img" style="background: ${data.image_gradient || 'linear-gradient(45deg, #00ccff, #001133)'};"></div>
+      <article class="project-card ${category}" data-category="${category}">
+        <div class="project-img" style="background: ${gradient};"></div>
         <div class="project-info">
           <div class="project-tags">${tagsHtml}</div>
-          <h3 class="pixel-text">${data.title || ''}</h3>
+          <h3 class="pixel-text">${data.title || 'Без названия'}</h3>
           <p class="pixel-text small">${data.excerpt || ''}</p>
           <a href="${data.link || '#'}" class="link-pixel pixel-text">ОТКРЫТЬ ДОСЬЕ →</a>
         </div>
@@ -95,96 +165,234 @@ const CMSLoader = {
     `;
   },
 
-  // Загрузка и вставка контента
-  async loadServices(containerSelector = '.services-grid') {
-    const container = document.querySelector(containerSelector);
-    if (!container) return;
-
+  /**
+   * Загрузка списка файлов с GitHub API (если доступно)
+   * Или используем fallback со списком известных файлов
+   */
+  async fetchFileList(folder) {
+    // Пробуем получить список через GitHub API
     try {
-      // Получаем список файлов из папки (GitHub API или прямой перебор)
-      const files = ['landing', 'shop', 'corp', 'support']; // Можно расширить
+      // Извлекаем репо из текущего домена (если возможно)
+      // Или используем статический список
+      const knownFiles = {
+        'portfolio': ['crypto-dash', 'neon-plants', 'cyber-security', 'pixel-war', 'star44'],
+        'services': ['landing', 'shop', 'corp', 'support']
+      };
       
-      let html = '';
-      for (const slug of files) {
-        const resp = await fetch(`/content/services/${slug}.md`);
-        if (!resp.ok) continue;
-        const text = await resp.text();
-        const { meta } = this.parseFrontmatter(text);
-        html += this.generateServiceCard(meta);
-      }
-      
-      if (html) container.innerHTML = html;
+      return knownFiles[folder] || [];
     } catch (e) {
-      console.log('CMS services not loaded, using static HTML');
+      console.warn('CMS: не удалось получить список файлов, используем fallback');
+      return [];
     }
   },
 
-  async loadPortfolio(containerSelector = '.portfolio-grid') {
+  /**
+   * Загрузка и отображение услуг
+   */
+  async loadServices(containerSelector = '.services-grid') {
     const container = document.querySelector(containerSelector);
-    if (!container) return;
+    if (!container) {
+      console.log('CMS: контейнер услуг не найден:', containerSelector);
+      return;
+    }
 
     try {
-      const files = ['crypto-dash', 'neon-plants', 'cyber-security', 'pixel-war', 'star44'];
+      // Получаем список файлов
+      const files = await this.fetchFileList('services');
+      console.log('CMS: загружаем услуги:', files);
       
       let html = '';
+      let loadedCount = 0;
+      
+      // Загружаем каждый файл
       for (const slug of files) {
-        const resp = await fetch(`/content/portfolio/${slug}.md`);
-        if (!resp.ok) continue;
-        const text = await resp.text();
-        const { meta } = this.parseFrontmatter(text);
-        html += this.generatePortfolioCard(meta, slug);
+        try {
+          const resp = await fetch(`/content/services/${slug}.md`);
+          if (resp.ok) {
+            const text = await resp.text();
+            const { meta } = this.parseFrontmatter(text);
+            html += this.generateServiceCard(meta);
+            loadedCount++;
+            console.log(`CMS: загружена услуга ${slug}.md`);
+          } else {
+            console.log(`CMS: файл ${slug}.md не найден (статус ${resp.status})`);
+          }
+        } catch (e) {
+          console.warn(`CMS: ошибка при загрузке ${slug}.md:`, e.message);
+        }
       }
       
       if (html) {
         container.innerHTML = html;
-        // Перезапускаем фильтрацию, если она есть
-        if (typeof initPortfolioFilters === 'function') {
-          initPortfolioFilters();
-        }
+        console.log(`CMS: загружено ${loadedCount} услуг`);
+      } else {
+        console.log('CMS: услуги не загружены, используется статический HTML');
       }
     } catch (e) {
-      console.log('CMS portfolio not loaded, using static HTML');
+      console.error('CMS: критическая ошибка при загрузке услуг:', e);
     }
   },
 
-  // Инициализация
-  init() {
-    // Определяем, на какой странице мы
-    const path = window.location.pathname;
+  /**
+   * Загрузка и отображение портфолио
+   */
+  async loadPortfolio(containerSelector = '.portfolio-grid') {
+    const container = document.querySelector(containerSelector);
+    if (!container) {
+      console.log('CMS: контейнер портфолио не найден:', containerSelector);
+      return;
+    }
+
+    try {
+      // Получаем список файлов
+      const files = await this.fetchFileList('portfolio');
+      console.log('CMS: загружаем портфолио:', files);
+      
+      let html = '';
+      let loadedCount = 0;
+      
+      // Загружаем каждый файл
+      for (const slug of files) {
+        try {
+          const resp = await fetch(`/content/portfolio/${slug}.md`);
+          if (resp.ok) {
+            const text = await resp.text();
+            const { meta } = this.parseFrontmatter(text);
+            html += this.generatePortfolioCard(meta, slug);
+            loadedCount++;
+            console.log(`CMS: загружен проект ${slug}.md`);
+          } else {
+            console.log(`CMS: файл ${slug}.md не найден (статус ${resp.status})`);
+          }
+        } catch (e) {
+          console.warn(`CMS: ошибка при загрузке ${slug}.md:`, e.message);
+        }
+      }
+      
+      if (html) {
+        container.innerHTML = html;
+        console.log(`CMS: загружено ${loadedCount} проектов`);
+        
+        // Перезапускаем фильтрацию портфолио
+        if (typeof window.initPortfolioFilters === 'function') {
+          window.initPortfolioFilters();
+          console.log('CMS: фильтрация перезапущена');
+        }
+      } else {
+        console.log('CMS: портфолио не загружено, используется статический HTML');
+      }
+    } catch (e) {
+      console.error('CMS: критическая ошибка при загрузке портфолио:', e);
+    }
+  },
+
+  /**
+   * Загрузка контента на главную страницу
+   */
+  async loadHomepage() {
+    // Можно загрузить превью последних проектов
+    const portfolioContainer = document.querySelector('#portfolio .pixel-grid-3, .portfolio-grid');
+    if (portfolioContainer) {
+      await this.loadPortfolio('#portfolio .pixel-grid-3');
+    }
     
-    if (path.includes('services.html') || path.endsWith('/services.html')) {
+    // Или превью услуг
+    const servicesContainer = document.querySelector('.services-grid');
+    if (servicesContainer) {
+      await this.loadServices();
+    }
+  },
+
+  /**
+   * Инициализация CMS Loader
+   */
+  init() {
+    console.log('CMS Loader: инициализация...');
+    
+    // Определяем текущую страницу
+    const path = window.location.pathname;
+    const page = path.split('/').pop() || 'index.html';
+    
+    console.log('CMS Loader: текущая страница:', page);
+    
+    // Загружаем соответствующий контент
+    if (page === 'services.html') {
+      console.log('CMS Loader: загрузка услуг...');
       this.loadServices();
     }
-    if (path.includes('portfolio.html') || path.endsWith('/portfolio.html')) {
+    
+    if (page === 'portfolio.html') {
+      console.log('CMS Loader: загрузка портфолио...');
       this.loadPortfolio();
     }
-    // Для главной можно загрузить превью
-    if (path === '/' || path.endsWith('index.html')) {
-      this.loadPortfolio('#portfolio .pixel-grid-3');
+    
+    if (page === 'index.html' || page === '/') {
+      console.log('CMS Loader: загрузка главной страницы...');
+      this.loadHomepage();
     }
+    
+    console.log('CMS Loader: инициализация завершена');
   }
 };
 
-// Запускаем после загрузки DOM
-document.addEventListener('DOMContentLoaded', () => {
-  CMSLoader.init();
-});
-
-// Перезапуск фильтрации после загрузки контента
-function initPortfolioFilters() {
+/**
+ * Функция инициализации фильтрации портфолио
+ * (должна быть глобальной, чтобы CMS Loader мог её вызвать)
+ */
+window.initPortfolioFilters = function() {
+  console.log('CMS: инициализация фильтров портфолио...');
+  
   const filterBtns = document.querySelectorAll('.filter-btn');
   const projects = document.querySelectorAll('.project-card');
+  
+  if (filterBtns.length === 0 || projects.length === 0) {
+    console.log('CMS: фильтры или проекты не найдены');
+    return;
+  }
 
   filterBtns.forEach(btn => {
-    btn.onclick = () => {
+    // Удаляем старые обработчики (клонированием)
+    const newBtn = btn.cloneNode(true);
+    btn.parentNode.replaceChild(newBtn, btn);
+    
+    newBtn.addEventListener('click', function() {
       filterBtns.forEach(b => b.classList.remove('active'));
-      btn.classList.add('active');
-      const filter = btn.dataset.filter;
+      this.classList.add('active');
+      
+      const filter = this.dataset.filter;
+      console.log('CMS: фильтр:', filter);
       
       projects.forEach(card => {
         const cat = card.dataset.category;
-        card.style.display = (filter === 'all' || filter === cat) ? '' : 'none';
+        const shouldShow = (filter === 'all' || filter === cat);
+        card.style.display = shouldShow ? '' : 'none';
+        
+        // Анимация появления
+        if (shouldShow) {
+          card.style.opacity = '0';
+          setTimeout(() => {
+            card.style.transition = 'opacity 0.3s';
+            card.style.opacity = '1';
+          }, 50);
+        }
       });
-    };
+    });
   });
+  
+  console.log('CMS: фильтры инициализированы');
+};
+
+/**
+ * Запускаем CMS Loader после загрузки DOM
+ */
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', () => {
+    CMSLoader.init();
+  });
+} else {
+  // DOM уже загружен
+  CMSLoader.init();
 }
+
+// Экспортируем для использования в консоли
+window.CMSLoader = CMSLoader;
