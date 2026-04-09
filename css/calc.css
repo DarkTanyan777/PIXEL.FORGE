@@ -25,7 +25,7 @@
   flex-direction: column;
   box-shadow: 0 0 20px rgba(255, 42, 117, 0.1);
   position: sticky;
-  top: 120px; /* Прилипает при скролле на десктопе */
+  top: 120px;
 }
 
 .panel-header {
