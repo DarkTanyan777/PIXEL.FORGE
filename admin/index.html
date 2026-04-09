@@ -4,10 +4,9 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>PIXEL.FORGE — CMS</title>
-  <!-- Подключаем Decap CMS -->
+  <!-- Подключаем стабильную версию Decap CMS v2 -->
   <script src="https://unpkg.com/decap-cms@^2.10.19/dist/decap-cms.js"></script>
   <style>
-    /* Киберпанк-стиль для админки */
     :root {
       --cyber-bg: #0a0a1a;
       --cyber-cyan: #00f0ff;
@@ -16,38 +15,11 @@
     body {
       background: var(--cyber-bg);
       font-family: 'Courier New', monospace;
-    }
-    .nc-root {
-      background: var(--cyber-bg) !important;
-      color: #e0e0ff !important;
-    }
-    .nc-btn-primary {
-      background: var(--cyber-cyan) !important;
-      color: #0a0a1a !important;
-      border: 2px solid var(--cyber-cyan) !important;
-    }
-    .nc-btn-primary:hover {
-      background: transparent !important;
-      color: var(--cyber-cyan) !important;
+      margin: 0;
+      padding: 0;
     }
   </style>
 </head>
 <body>
-  <!-- Контейнер для CMS -->
-  <div id="nc-root"></div>
-
-  <script>
-  // Ждём полной загрузки DOM
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', initCMS);
-  } else {
-    initCMS();
-  }
-  
-  function initCMS() {
-    console.log('Decap CMS initializing...');
-    // CMS автоматически инициализируется, если подключён скрипт
-  }
-</script>
 </body>
 </html>
