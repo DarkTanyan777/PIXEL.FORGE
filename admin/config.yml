@@ -1,0 +1,54 @@
+backend:
+  name: git-gateway
+  branch: main
+
+media_folder: "assets/img"
+public_folder: "assets/img"
+locale: "ru"
+
+collections:
+  # 🎨 ПОРТФОЛИО
+  - name: "portfolio"
+    label: "🎨 Портфолио"
+    folder: "content/portfolio"
+    create: true
+    slug: "{{slug}}"
+    preview_path: "portfolio.html"
+    fields:
+      - {label: "Заголовок", name: "title", widget: "string"}
+      - {label: "Категория", name: "category", widget: "select", options: [
+          {label: "Лендинг", value: "landing"},
+          {label: "Магазин", value: "shop"},
+          {label: "Корпоративный", value: "corp"}
+        ]}
+      - {label: "Теги (через запятую)", name: "tags", widget: "string", hint: "Fintech, Crypto"}
+      - {label: "Краткое описание", name: "excerpt", widget: "text"}
+      - {label: "Изображение (градиент или URL)", name: "image_gradient", widget: "string", hint: "linear-gradient(45deg, #ff0055, #000066)"}
+      - {label: "Ссылка на проект", name: "link", widget: "string", required: false}
+
+  # 🛠 УСЛУГИ
+  - name: "services"
+    label: "🛠 Услуги"
+    folder: "content/services"
+    create: true
+    slug: "{{slug}}"
+    preview_path: "services.html"
+    fields:
+      - {label: "Название", name: "title", widget: "string"}
+      - {label: "Код для калькулятора", name: "code", widget: "string", hint: "Landing, Shop, Corp"}
+      - {label: "Номер в списке", name: "number", widget: "number", min: 1, max: 9}
+      - {label: "Цвет номера", name: "color_class", widget: "select", options: [
+          {label: "Cyan", value: "pixel-cyan"},
+          {label: "Pink", value: "pixel-pink"},
+          {label: "Green", value: "pixel-green"}
+        ]}
+      - {label: "Цена", name: "price", widget: "number"}
+      - {label: "Цвет цены", name: "price_color", widget: "select", options: [
+          {label: "Yellow", value: "pixel-yellow"},
+          {label: "Green", value: "pixel-green"}
+        ]}
+      - {label: "Срок", name: "days", widget: "string", hint: "5-7 дней"}
+      - {label: "Описание", name: "description", widget: "text"}
+      - {label: "Особенности (по одной на строку)", name: "features", widget: "list"}
+      - {label: "Популярная?", name: "popular", widget: "boolean", default: false}
+      - {label: "Ссылка на калькулятор", name: "calc_link", widget: "string", hint: "calculator.html?name=Landing&price=25000&days=7"}
