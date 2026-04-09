@@ -10,6 +10,12 @@ function bootSequence() {
   const bootScreen = document.getElementById('bootScreen');
   const bootBar = document.getElementById('bootBar');
   const bootText = document.getElementById('bootText');
+  
+  if (!bootScreen || !bootBar || !bootText) {
+    if (bootScreen) bootScreen.style.display = 'none';
+    return;
+  }
+  
   let progress = 0;
   let lineIndex = 0;
 
@@ -25,6 +31,10 @@ function bootSequence() {
 
     if (progress === 100) {
       clearInterval(interval);
+      
+      // 🔑 ДОБАВЛЕНО: сохраняем, что пользователь увидел загрузку
+      sessionStorage.setItem('bootSeen', 'true');
+      
       setTimeout(() => {
         bootScreen.classList.add('fade-out');
         setTimeout(() => bootScreen.remove(), 1000);
@@ -33,7 +43,19 @@ function bootSequence() {
   }, 300);
 }
 
-window.addEventListener('load', bootSequence);
+// 🔑 ИЗМЕНЕНО: проверяем sessionStorage ПЕРЕД запуском анимации
+window.addEventListener('load', () => {
+  const bootScreen = document.getElementById('bootScreen');
+  
+  // Если уже видел загрузку в этой сессии — скрываем мгновенно
+  if (sessionStorage.getItem('bootSeen') === 'true') {
+    if (bootScreen) bootScreen.style.display = 'none';
+    return;
+  }
+  
+  // Иначе запускаем анимацию
+  bootSequence();
+});
 
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -44,21 +66,27 @@ document.addEventListener('DOMContentLoaded', () => {
   const navLinks = document.querySelectorAll('.nav__link');
 
   function toggleMenu() {
+    // 🔑 ДОБАВЛЕНО: проверка на существование элементов
+    if (!nav || !burger) return;
+    
     nav.classList.toggle('open');
     burger.classList.toggle('active');
     document.body.style.overflow = nav.classList.contains('open') ? 'hidden' : '';
   }
 
-  burger.addEventListener('click', toggleMenu);
-  closeBtn.addEventListener('click', toggleMenu);
-  navLinks.forEach(link => link.addEventListener('click', () => {
-    if (nav.classList.contains('open')) toggleMenu();
-  }));
+  // 🔑 ДОБАВЛЕНО: проверка перед добавлением слушателей
+  if (burger) {
+    burger.addEventListener('click', toggleMenu);
+    closeBtn?.addEventListener('click', toggleMenu);
+    navLinks?.forEach(link => link.addEventListener('click', () => {
+      if (nav?.classList.contains('open')) toggleMenu();
+    }));
+  }
 
   // 2. Эффект скролла для хедера
   const header = document.getElementById('header');
   window.addEventListener('scroll', () => {
-    header.classList.toggle('scrolled', window.scrollY > 30);
+    header?.classList.toggle('scrolled', window.scrollY > 30);
   });
 
   // 3. Плавная прокрутка
