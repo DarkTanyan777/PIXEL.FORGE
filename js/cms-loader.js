@@ -394,5 +394,39 @@ if (document.readyState === 'loading') {
   CMSLoader.init();
 }
 
+// === АВТОЗАПУСК С ПРОВЕРКОЙ ===
+function safeAutoInit() {
+  // Ждём пока полностью загрузится страница
+  if (document.readyState === 'complete') {
+    // Небольшая задержка чтобы гарантировать рендер
+    setTimeout(() => {
+      console.log('CMS: автозапуск с задержкой...');
+      
+      // Проверяем что контейнер точно есть
+      const portfolioContainer = document.querySelector('.portfolio-grid');
+      if (portfolioContainer) {
+        console.log('CMS: контейнер найден, загружаем...');
+        CMSLoader.loadPortfolio();
+      } else {
+        console.log('CMS: контейнер не найден, повтор через 500мс');
+        setTimeout(() => {
+          if (document.querySelector('.portfolio-grid')) {
+            CMSLoader.loadPortfolio();
+          }
+        }, 500);
+      }
+    }, 100); // 300мс задержка
+  }
+}
+
+// Запускаем при разных событиях для надёжности
+window.addEventListener('load', safeAutoInit);
+document.addEventListener('DOMContentLoaded', safeAutoInit);
+
+// И на всякий случай — если страница уже загружена
+if (document.readyState === 'complete' || document.readyState === 'interactive') {
+  setTimeout(safeAutoInit, 100);
+}
+
 // Экспортируем для использования в консоли
 window.CMSLoader = CMSLoader;
