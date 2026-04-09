@@ -124,7 +124,7 @@ const CMSLoader = {
     if (!container) return;
 
     try {
-      const files = ['crypto-dash', 'neon-plants', 'cyber-security', 'pixel-war'];
+      const files = ['crypto-dash', 'neon-plants', 'cyber-security', 'pixel-war', 'star44'];
       
       let html = '';
       for (const slug of files) {
