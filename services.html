@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Услуги — PIXEL.FORGE</title>
+  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/services.css">
+</head>
+<body>
+
+  <div class="scanlines"></div>
+  <div class="grid-overlay"></div>
+
+  <!-- HEADER -->
+  <header class="header" id="header">
+    <div class="container header__inner">
+      <a href="index.html" class="logo">
+        <span class="pixel-text pixel-cyan">PIXEL</span><span class="pixel-text pixel-pink">.FORGE</span>
+      </a>
+      <nav class="nav" id="nav">
+        <ul class="nav__list">
+          <li><a href="portfolio.html" class="nav__link pixel-text">Кейсы</a></li>
+          <li><a href="services.html" class="nav__link pixel-text" style="color:var(--cyan);">Услуги</a></li>
+          <li><a href="calculator.html" class="nav__link pixel-text">Калькулятор</a></li>
+        </ul>
+        <button class="nav__close pixel-text" aria-label="Закрыть меню">[X]</button>
+      </nav>
+      <a href="calculator.html" class="btn btn-pixel btn-cyan header__cta">
+        <span class="pixel-text">РАСЧЕТ</span>
+      </a>
+      <button class="burger" id="burger" aria-label="Открыть меню">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </header>
+
+  <main style="padding-top: 120px;">
+    <section class="section">
+      <div class="container">
+        <h1 class="section-title fade-up pixel-text glitch" data-text="SYSTEM.MODULES">
+          SYSTEM.MODULES
+        </h1>
+        <p class="pixel-text small" style="text-align:center; color:var(--text-secondary); margin-bottom: 60px;">
+          > ВЫБЕРИТЕ НУЖНЫЙ МОДУЛЬ ДЛЯ ИНТЕГРАЦИИ...
+        </p>
+
+        <div class="services-grid">
+          
+          <!-- Услуга 1 -->
+          <div class="service-card fade-up">
+            <div class="service-header">
+              <span class="pixel-text pixel-cyan">01</span>
+              <h2 class="pixel-text">ЛЕНДИНГ</h2>
+            </div>
+            <div class="service-body">
+              <p class="pixel-text small">Одностраничный сайт для быстрой продажи товара или услуги. Высокая конверсия.</p>
+              <ul class="service-features">
+                <li class="pixel-text small">▸ Уникальный дизайн</li>
+                <li class="pixel-text small">▸ Адаптив под все устройства</li>
+                <li class="pixel-text small">▸ Настройка форм заявок</li>
+                <li class="pixel-text small">▸ Срок: 5-7 дней</li>
+              </ul>
+              <div class="service-price">
+                <span class="pixel-text small">ОТ</span>
+                <span class="pixel-text pixel-yellow">25 000₽</span>
+              </div>
+              <!-- Ссылка на калькулятор с параметрами -->
+              <a href="calculator.html?name=Landing&price=25000&days=7" class="btn btn-pixel btn-outline-cyan full-width">
+                <span class="pixel-text small">ВЫБРАТЬ</span>
+              </a>
+            </div>
+          </div>
+
+          <!-- Услуга 2 -->
+          <div class="service-card fade-up popular">
+            <div class="service-header">
+              <span class="pixel-text pixel-pink">02</span>
+              <h2 class="pixel-text">МАГАЗИН</h2>
+            </div>
+            <div class="service-body">
+              <p class="pixel-text small">Полноценный интернет-магазин с корзиной, оплатой и личным кабинетом.</p>
+              <ul class="service-features">
+                <li class="pixel-text small">▸ Каталог товаров</li>
+                <li class="pixel-text small">▸ Корзина и Чекаут</li>
+                <li class="pixel-text small">▸ Интеграция с CRM</li>
+                <li class="pixel-text small">▸ Срок: 14-20 дней</li>
+              </ul>
+              <div class="service-price">
+                <span class="pixel-text small">ОТ</span>
+                <span class="pixel-text pixel-yellow">65 000₽</span>
+              </div>
+              <a href="calculator.html?name=Shop&price=65000&days=20" class="btn btn-pixel btn-pink full-width">
+                <span class="pixel-text small">ВЫБРАТЬ</span>
+              </a>
+            </div>
+          </div>
+
+          <!-- Услуга 3 -->
+          <div class="service-card fade-up">
+            <div class="service-header">
+              <span class="pixel-text pixel-cyan">03</span>
+              <h2 class="pixel-text">КОРПОРАТИВНЫЙ</h2>
+            </div>
+            <div class="service-body">
+              <p class="pixel-text small">Многостраничный сайт для компании. Блог, вакансии, о нас.</p>
+              <ul class="service-features">
+                <li class="pixel-text small">▸ До 10 страниц</li>
+                <li class="pixel-text small">▸ CMS для управления</li>
+                <li class="pixel-text small">▸ SEO оптимизация</li>
+                <li class="pixel-text small">▸ Срок: 10-14 дней</li>
+              </ul>
+              <div class="service-price">
+                <span class="pixel-text small">ОТ</span>
+                <span class="pixel-text pixel-yellow">45 000₽</span>
+              </div>
+              <a href="calculator.html?name=Corp&price=45000&days=14" class="btn btn-pixel btn-outline-cyan full-width">
+                <span class="pixel-text small">ВЫБРАТЬ</span>
+              </a>
+            </div>
+          </div>
+
+          <!-- Услуга 4 -->
+          <div class="service-card fade-up">
+            <div class="service-header">
+              <span class="pixel-text pixel-green">04</span>
+              <h2 class="pixel-text">ПОДДЕРЖКА</h2>
+            </div>
+            <div class="service-body">
+              <p class="pixel-text small">Техническое обслуживание вашего сайта. Обновления, бэкапы, правки.</p>
+              <ul class="service-features">
+                <li class="pixel-text small">▸ Мониторинг 24/7</li>
+                <li class="pixel-text small">▸ Еженедельные бэкапы</li>
+                <li class="pixel-text small">▸ Мелкие правки текста</li>
+                <li class="pixel-text small">▸ Срок: Ежемесячно</li>
+              </ul>
+              <div class="service-price">
+                <span class="pixel-text small">ОТ</span>
+                <span class="pixel-text pixel-green">5 000₽</span>
+                <span class="pixel-text small">/мес</span>
+              </div>
+              <a href="mailto:support@pixelforge.dev" class="btn btn-pixel btn-outline-cyan full-width">
+                <span class="pixel-text small">НАПИСАТЬ</span>
+              </a>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="container footer__grid">
+      <div>
+        <a href="index.html" class="logo footer-logo">
+          <span class="pixel-text pixel-cyan">PIXEL</span><span class="pixel-text pixel-pink">.FORGE</span>
+        </a>
+        <p class="pixel-text small footer-copy">© 2026 ВСЕ ПРАВА ЗАЩИЩЕНЫ</p>
+      </div>
+      <div>
+        <h4 class="pixel-text small">НАВИГАЦИЯ</h4>
+        <ul>
+          <li><a href="portfolio.html" class="pixel-text small">КЕЙСЫ</a></li>
+          <li><a href="services.html" class="pixel-text small">УСЛУГИ</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4 class="pixel-text small">КОНТАКТЫ</h4>
+        <p><a href="mailto:dark.tanyans777@gmail.com" class="pixel-text small">dark.tanyans777@gmail.com</a></p>
+        <p><a href="https://t.me/Dark_Tanyan" class="pixel-text small">TELEGRAM</a></p>
+        <p><a href="https://t.me/Baba_klava29" class="pixel-text small">TELEGRAM(МОЁ ВТОРОЕ Я)</a></p>
+      </div>
+    </div>
+    <div class="footer-pixel-border"></div>
+  </footer>
+
+    <div class="custom-cursor cursor-dot"></div>
+    <div class="custom-cursor cursor-ring"></div>
+
+  <script src="js/main.js"></script>
+  <script src="js/cursor.js"></script>
+  <script src="js/cms-loader.js"></script>
+</body>
+</html>

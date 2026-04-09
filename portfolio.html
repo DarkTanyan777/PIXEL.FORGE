@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Портфолио — PIXEL.FORGE</title>
+  <meta name="description" content="Наши лучшие работы в стиле киберпанк. Лендинги, магазины и корпоративные сайты.">
+  
+  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/portfolio.css">
+</head>
+<body>
+
+  <div class="scanlines"></div>
+  <div class="grid-overlay"></div>
+
+  <!-- HEADER -->
+  <header class="header" id="header">
+    <div class="container header__inner">
+      <a href="index.html" class="logo">
+        <span class="pixel-text pixel-cyan">PIXEL</span><span class="pixel-text pixel-pink">.FORGE</span>
+      </a>
+      <nav class="nav" id="nav">
+        <ul class="nav__list">
+          <li><a href="portfolio.html" class="nav__link pixel-text" style="color:var(--cyan);">Кейсы</a></li>
+          <li><a href="services.html" class="nav__link pixel-text">Услуги</a></li>
+          <li><a href="calculator.html" class="nav__link pixel-text">Калькулятор</a></li>
+        </ul>
+        <button class="nav__close pixel-text" aria-label="Закрыть меню">[X]</button>
+      </nav>
+      <a href="calculator.html" class="btn btn-pixel btn-cyan header__cta">
+        <span class="pixel-text">РАСЧЕТ</span>
+      </a>
+      <button class="burger" id="burger" aria-label="Открыть меню">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </header>
+
+  <main style="padding-top: 120px;">
+    <section class="section">
+      <div class="container">
+        <h1 class="section-title fade-up pixel-text glitch" data-text="PROJECT.ARCHIVE">
+          PROJECT.ARCHIVE
+        </h1>
+        <p class="pixel-text small" style="text-align:center; color:var(--text-secondary); margin-bottom: 40px;">
+          > ДОСТУП К БАЗЕ ДАННЫХ ПРОЕКТОВ РАЗРЕШЕН...
+        </p>
+
+        <!-- Фильтры -->
+        <div class="portfolio-filters fade-up">
+          <button class="filter-btn active" data-filter="all">ВСЕ</button>
+          <button class="filter-btn" data-filter="landing">ЛЕНДИНГИ</button>
+          <button class="filter-btn" data-filter="shop">МАГАЗИНЫ</button>
+          <button class="filter-btn" data-filter="corp">КОРПОРАТИВНЫЕ</button>
+        </div>
+
+        <!-- Сетка проектов -->
+        <div class="portfolio-grid">
+          
+          <!-- Проект 1 (Лендинг) -->
+          <article class="project-card landing" data-category="landing">
+            <div class="project-img" style="background: linear-gradient(45deg, #ff0055, #000066);"></div>
+            <div class="project-info">
+              <div class="project-tags"><span class="tag">Лендинг</span><span class="tag">Fintech</span></div>
+              <h3 class="pixel-text">CRYPTO DASH</h3>
+              <p class="pixel-text small">Высоконагруженный дашборд для криптобиржи. Анимации WebGL.</p>
+              <a href="#" class="link-pixel pixel-text">ОТКРЫТЬ ДОСЬЕ →</a>
+            </div>
+          </article>
+
+          <!-- Проект 2 (Магазин) -->
+          <article class="project-card shop" data-category="shop">
+            <div class="project-img" style="background: linear-gradient(45deg, #00ff99, #003300);"></div>
+            <div class="project-info">
+              <div class="project-tags"><span class="tag pixel-green">Магазин</span><span class="tag">Eco</span></div>
+              <h3 class="pixel-text">NEON PLANTS</h3>
+              <p class="pixel-text small">Интернет-магазин редких растений. Интеграция с 1С.</p>
+              <a href="#" class="link-pixel pixel-text">ОТКРЫТЬ ДОСЬЕ →</a>
+            </div>
+          </article>
+
+          <!-- Проект 3 (Корпоративный) -->
+          <article class="project-card corp" data-category="corp">
+            <div class="project-img" style="background: linear-gradient(45deg, #00ccff, #001133);"></div>
+            <div class="project-info">
+              <div class="project-tags"><span class="tag pixel-cyan">Корпоративный</span></div>
+              <h3 class="pixel-text">CYBER SECURITY</h3>
+              <p class="pixel-text small">Сайт компании по кибербезопасности. Строгий B2B стиль.</p>
+              <a href="#" class="link-pixel pixel-text">ОТКРЫТЬ ДОСЬЕ →</a>
+            </div>
+          </article>
+
+           <!-- Проект 4 (Лендинг) -->
+           <article class="project-card landing" data-category="landing">
+            <div class="project-img" style="background: linear-gradient(45deg, #ffcc00, #330000);"></div>
+            <div class="project-info">
+              <div class="project-tags"><span class="tag">Лендинг</span><span class="tag">Game</span></div>
+              <h3 class="pixel-text">PIXEL WAR</h3>
+              <p class="pixel-text small">Промо-страница для инди-игры. Параллакс эффекты.</p>
+              <a href="#" class="link-pixel pixel-text">ОТКРЫТЬ ДОСЬЕ →</a>
+            </div>
+          </article>
+
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="container footer__grid">
+      <div>
+        <a href="index.html" class="logo footer-logo">
+          <span class="pixel-text pixel-cyan">PIXEL</span><span class="pixel-text pixel-pink">.FORGE</span>
+        </a>
+        <p class="pixel-text small footer-copy">© 2026 ВСЕ ПРАВА ЗАЩИЩЕНЫ</p>
+      </div>
+      <div>
+        <h4 class="pixel-text small">НАВИГАЦИЯ</h4>
+        <ul>
+          <li><a href="portfolio.html" class="pixel-text small">КЕЙСЫ</a></li>
+          <li><a href="services.html" class="pixel-text small">УСЛУГИ</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4 class="pixel-text small">КОНТАКТЫ</h4>
+        <p><a href="mailto:dark.tanyans777@gmail.com" class="pixel-text small">dark.tanyans777@gmail.com</a></p>
+        <p><a href="https://t.me/Dark_Tanyan" class="pixel-text small">TELEGRAM</a></p>
+        <p><a href="https://t.me/Baba_klava29" class="pixel-text small">TELEGRAM(МОЁ ВТОРОЕ Я)</a></p>
+      </div>
+    </div>
+    <div class="footer-pixel-border"></div>
+  </footer>
+
+  <div class="custom-cursor cursor-dot"></div>
+  <div class="custom-cursor cursor-ring"></div>
+
+  <script src="js/main.js"></script>
+  <script src="js/portfolio.js"></script>
+  <script src="js/cursor.js"></script>
+  <script src="js/cms-loader.js"></script>
+</body>
+</html>

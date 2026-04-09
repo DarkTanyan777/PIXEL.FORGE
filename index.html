@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PIXEL.FORGE — Сайты в пиксельном стиле</title>
+  <meta name="description" content="Создаём уникальные сайты в ретро-киберпанк стиле. Прозрачные цены, фиксированные сроки.">
+
+  <!-- Пиксельный шрифт -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+    <!-- загрузочный экран -->
+    <div class="boot-screen" id="bootScreen">
+        <div class="boot-content">
+            <div class="boot-logo pixel-text">PIXEL.FORGE v2.0.26</div>
+            <div class="boot-line">INITIALIZING SYSTEM...</div>
+            <div class="boot-progress">
+                <div class="boot-bar" id="bootBar"></div>
+            </div>
+            <div class="boot-text" id="bootText"></div>
+        </div>
+    </div>
+  <!-- Сканлайн-оверлей -->
+  <div class="scanlines"></div>
+  <div class="grid-overlay"></div>
+
+  <!-- HEADER -->
+  <header class="header" id="header">
+    <div class="container header__inner">
+      <a href="#" class="logo">
+        <span class="pixel-text pixel-cyan">PIXEL</span><span class="pixel-text pixel-pink">.FORGE</span>
+      </a>
+      <nav class="nav" id="nav">
+        <ul class="nav__list">
+            <li><a href="portfolio.html" class="nav__link pixel-text">Кейсы</a></li>
+            <li><a href="services.html" class="nav__link pixel-text">Услуги</a></li>
+            <li><a href="calculator.html" class="nav__link pixel-text">Калькулятор</a></li>
+        </ul>
+        <button class="nav__close pixel-text" aria-label="Закрыть меню">[X]</button>
+      </nav>
+      <a href="#pricing" class="btn btn-pixel btn-cyan header__cta">
+        <span class="pixel-text">ЗАКАЗАТЬ</span>
+      </a>
+      <button class="burger" id="burger" aria-label="Открыть меню">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </header>
+
+  <main>
+    <!-- HERO -->
+    <section class="hero">
+      <div class="container hero__inner">
+        <div class="hero__content">
+          <div class="pixel-badge fade-up">
+            <span class="pixel-text">ЗАПУСК ЗА 7–14 ДНЕЙ</span>
+          </div>
+          <h1 class="fade-up pixel-text">
+            <span class="pixel-cyan">САЙТЫ</span>, КОТОРЫЕ<br>
+            <span class="pixel-pink glow">ПРИНОСЯТ</span> ЗАЯВКИ
+          </h1>
+          <p class="hero__desc pixel-text fade-up">
+            ПРОЕКТИРУЕМ И РАЗРАБАТЫВАЕМ УНИКАЛЬНЫЕ САЙТЫ.<br>
+            С ЛЮБЫМ УРОВНЕМ СЛОЖНОСТИ. ФИКСИРОВАННАЯ ЦЕНА.
+          </p>
+          <div class="hero__btns fade-up">
+            <a href="#pricing" class="btn btn-pixel btn-cyan">
+              <span class="pixel-text">РАССЧИТАТЬ</span>
+            </a>
+            <a href="#portfolio" class="btn btn-pixel btn-pink">
+              <span class="pixel-text">КЕЙСЫ</span>
+            </a>
+          </div>
+
+          <!-- Пиксельная статистика -->
+          <div class="pixel-stats fade-up">
+            <div class="pixel-stat">
+              <div class="pixel-block">10+</div>
+              <span class="pixel-text small">ПРОЕКТОВ</span>
+            </div>
+            <div class="pixel-stat">
+              <div class="pixel-block">90%</div>
+              <span class="pixel-text small">В СРОК</span>
+            </div>
+            <div class="pixel-stat">
+              <div class="pixel-block">24/7</div>
+              <span class="pixel-text small">ПОДДЕРЖКА</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Пиксельный мокап -->
+        <div class="hero__visual fade-up">
+          <div class="pixel-monitor">
+            <div class="monitor-screen">
+              <div class="monitor-content">
+                <div class="pixel-city"></div>
+              </div>
+              <div class="scanline-monitor"></div>
+            </div>
+            <div class="monitor-stand"></div>
+            <div class="monitor-glow"></div>
+          </div>
+
+          <!-- Декоративные пиксель-элементы -->
+          <div class="pixel-deco pixel-deco-1">
+            <div class="pixel-block-small pixel-cyan-bg"></div>
+            <div class="pixel-block-small pixel-pink-bg"></div>
+            <div class="pixel-block-small pixel-yellow-bg"></div>
+          </div>
+          <div class="pixel-deco pixel-deco-2">
+            <div class="pixel-block-small pixel-cyan-bg"></div>
+            <div class="pixel-block-small pixel-cyan-bg"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- BENEFITS -->
+    <section class="section" id="benefits">
+      <div class="container">
+        <h2 class="section-title fade-up pixel-text">
+          <span class="pixel-pink">►</span> ПОЧЕМУ МЫ
+        </h2>
+        <div class="pixel-grid pixel-grid-4">
+          <div class="pixel-card fade-up">
+            <div class="pixel-card-icon">⚡</div>
+            <h3 class="pixel-text">БЫСТРЫЙ ЗАПУСК</h3>
+            <p class="pixel-text small">ОТ БРИФА ДО ПУБЛИКАЦИИ<br>ЗА 1–2 НЕДЕЛИ</p>
+          </div>
+          <div class="pixel-card fade-up">
+            <div class="pixel-card-icon">🔍</div>
+            <h3 class="pixel-text">SEO С ПЕРВОГО ДНЯ</h3>
+            <p class="pixel-text small">ЧИСТЫЙ КОД, СЕМАНТИКА,<br>ОПТИМИЗАЦИЯ СКОРОСТИ</p>
+          </div>
+          <div class="pixel-card fade-up">
+            <div class="pixel-card-icon">📊</div>
+            <h3 class="pixel-text">ПРОЗРАЧНОСТЬ</h3>
+            <p class="pixel-text small">ФИКСИРОВАННАЯ СМЕТА,<br>ЕЖЕДНЕВНЫЕ ОТЧЁТЫ</p>
+          </div>
+          <div class="pixel-card fade-up">
+            <div class="pixel-card-icon">🛡️</div>
+            <h3 class="pixel-text">ГАРАНТИЯ 1 МЕС</h3>
+            <p class="pixel-text small">БЕСПЛАТНЫЕ ПРАВКИ,<br>ТЕХПОДДЕРЖКА</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- PORTFOLIO -->
+    <section class="section section-alt" id="portfolio">
+      <div class="container">
+        <h2 class="section-title fade-up pixel-text">
+          <span class="pixel-cyan">►</span> КЕЙСЫ
+        </h2>
+        <div class="pixel-grid pixel-grid-3">
+          <article class="portfolio-pixel fade-up">
+            <div class="portfolio-pixel-img">
+              <div class="pixel-art-thumb pixel-art-thumb-1"></div>
+            </div>
+            <div class="portfolio-pixel-info">
+              <span class="pixel-tag">ЛЕНДИНГ</span>
+              <h3 class="pixel-text">FINTech</h3>
+              <a href="#" class="link-pixel pixel-text">СМОТРЕТЬ →</a>
+            </div>
+          </article>
+          <article class="portfolio-pixel fade-up">
+            <div class="portfolio-pixel-img">
+              <div class="pixel-art-thumb pixel-art-thumb-2"></div>
+            </div>
+            <div class="portfolio-pixel-info">
+              <span class="pixel-tag pixel-tag-green">МАГАЗИН</span>
+              <h3 class="pixel-text">ECOGoods</h3>
+              <a href="#" class="link-pixel pixel-text">СМОТРЕТЬ →</a>
+            </div>
+          </article>
+          <article class="portfolio-pixel fade-up">
+            <div class="portfolio-pixel-img">
+              <div class="pixel-art-thumb pixel-art-thumb-3"></div>
+            </div>
+            <div class="portfolio-pixel-info">
+              <span class="pixel-tag pixel-tag-orange">КОРПОРАТИВНЫЙ</span>
+              <h3 class="pixel-text">LOGItech</h3>
+              <a href="#" class="link-pixel pixel-text">СМОТРЕТЬ →</a>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- PROCESS -->
+    <section class="section" id="process">
+      <div class="container">
+        <h2 class="section-title fade-up pixel-text">
+          <span class="pixel-pink">►</span> ПРОЦЕСС
+        </h2>
+        <div class="pixel-steps">
+          <div class="pixel-step fade-up">
+            <div class="pixel-step-num pixel-cyan-bg">01</div>
+            <h3 class="pixel-text">БРИФ</h3>
+            <p class="pixel-text small">ИЗУЧАЕМ НИШУ,<br>СОСТАВЛЯЕМ ТЗ</p>
+          </div>
+          <div class="pixel-step fade-up">
+            <div class="pixel-step-num pixel-pink-bg">02</div>
+            <h3 class="pixel-text">ПРОТОТИП</h3>
+            <p class="pixel-text small">РАСКЛАДКА БЛОКОВ,<br>ЛОГИКА СТРАНИЦ</p>
+          </div>
+          <div class="pixel-step fade-up">
+            <div class="pixel-step-num pixel-cyan-bg">03</div>
+            <h3 class="pixel-text">ДИЗАЙН</h3>
+            <p class="pixel-text small">UI В FIGMA,<br>2 ПРАВКИ</p>
+          </div>
+          <div class="pixel-step fade-up">
+            <div class="pixel-step-num pixel-pink-bg">04</div>
+            <h3 class="pixel-text">ЗАПУСК</h3>
+            <p class="pixel-text small">ВЁРСТКА, ТЕСТЫ,<br>ХОСТИНГ</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- PRICING -->
+    <section class="section section-alt" id="pricing">
+      <div class="container">
+        <h2 class="section-title fade-up pixel-text">
+          <span class="pixel-cyan">►</span> ТАРИФЫ
+        </h2>
+        <div class="pricing-pixel-grid">
+          <div class="price-pixel-card fade-up">
+            <h3 class="pixel-text">СТАРТ</h3>
+            <p class="pixel-text small price-desc">ДЛЯ ТЕСТОВ И<br>ЛИЧНЫХ ПРОЕКТОВ</p>
+            <div class="pixel-price pixel-cyan">25 000₽</div>
+            <ul class="pixel-price-list">
+              <li class="pixel-text small">▸ ЛЕНДИНГ</li>
+              <li class="pixel-text small">▸ АДАПТИВ</li>
+              <li class="pixel-text small">▸ ФОРМЫ</li>
+              <li class="pixel-text small">▸ 5–7 ДНЕЙ</li>
+            </ul>
+            <a href="calculator.html?name=START&price=25000&days=7" class="btn btn-pixel btn-outline-cyan">
+                <span class="pixel-text small">ВЫБРАТЬ</span>
+            </a>
+          </div>
+          <div class="price-pixel-card price-pixel-card-pop fade-up">
+            <div class="pixel-badge pixel-badge-blue pixel-text">★ ПОПУЛЯРНЫЙ</div>
+            <h3 class="pixel-text">БИЗНЕС</h3>
+            <p class="pixel-text small price-desc">ДЛЯ КОМПАНИЙ<br>И МАЛОГО БИЗНЕСА</p>
+            <div class="pixel-price pixel-pink">65 000₽</div>
+            <ul class="pixel-price-list">
+              <li class="pixel-text small">▸ ДО 7 СТРАНИЦ</li>
+              <li class="pixel-text small">▸ ДИЗАЙН</li>
+              <li class="pixel-text small">▸ CMS</li>
+              <li class="pixel-text small">▸ SEO + АНАЛИТИКА</li>
+              <li class="pixel-text small">▸ 10–14 ДНЕЙ</li>
+            </ul>
+            <a href="calculator.html?name=BUSINESS&price=65000&days=14" class="btn btn-pixel btn-pink">
+                <span class="pixel-text small">ВЫБРАТЬ</span>
+            </a>
+          </div>
+          <div class="price-pixel-card fade-up">
+            <h3 class="pixel-text">ПРЕМИУМ</h3>
+            <p class="pixel-text small price-desc">СЛОЖНЫЕ РЕШЕНИЯ<br>И E-COMMERCE</p>
+            <div class="pixel-price pixel-cyan">120 000₽</div>
+            <ul class="pixel-price-list">
+              <li class="pixel-text small">▸ КАТАЛОГ + КОРЗИНА</li>
+              <li class="pixel-text small">▸ ИНТЕГРАЦИИ</li>
+              <li class="pixel-text small">▸ АНИМАЦИИ</li>
+              <li class="pixel-text small">▸ ПРИОРИТЕТ</li>
+              <li class="pixel-text small">▸ ОТ 14 ДНЕЙ</li>
+            </ul>
+            <a href="calculator.html?name=PREMIUM&price=120000&days=21" class="btn btn-pixel btn-outline-cyan">
+                <span class="pixel-text small">ВЫБРАТЬ</span>
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    
+
+    <!-- FAQ -->
+    <section class="section" id="faq">
+      <div class="container faq-container">
+        <h2 class="section-title fade-up pixel-text">
+          <span class="pixel-pink">►</span> FAQ
+        </h2>
+        <details class="faq-pixel fade-up">
+          <summary class="faq-pixel-question pixel-text">▸ ЧТО ВХОДИТ В СТОИМОСТЬ?</summary>
+          <div class="faq-pixel-answer pixel-text small">ДИЗАЙН, АДАПТИВНАЯ ВЁРСТКА, БАЗОВОЕ SEO, НАСТРОЙКА ХОСТИНГА, АНАЛИТИКА И 30 ДНЕЙ ПОДДЕРЖКИ.</div>
+        </details>
+        <details class="faq-pixel fade-up">
+          <summary class="faq-pixel-question pixel-text">▸ СКОЛЬКО ПРАВОК ДОСТУПНО?</summary>
+          <div class="faq-pixel-answer pixel-text small">НА ЭТАПЕ ДИЗАЙНА — 2 РАУНДА. НА ВЁРСТКЕ — МЕЛКИЕ ПРАВКИ БЕСПЛАТНО.</div>
+        </details>
+        <details class="faq-pixel fade-up">
+          <summary class="faq-pixel-question pixel-text">▸ ОПЛАТА ЧАСТЯМИ?</summary>
+          <div class="faq-pixel-answer pixel-text small">ДА. СТАНДАРТНАЯ СХЕМА: 50% ПРЕДОПЛАТА, 50% ПОСЛЕ СДАЧИ.</div>
+        </details>
+        <details class="faq-pixel fade-up">
+          <summary class="faq-pixel-question pixel-text">▸ РАБОТАЕТЕ ПО ДОГОВОРУ?</summary>
+          <div class="faq-pixel-answer pixel-text small">ОБЯЗАТЕЛЬНО. ФИКСИРУЕМ СРОКИ, СТОИМОСТЬ, ЭТАПЫ.</div>
+        </details>
+      </div>
+    </section>
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="container footer__grid">
+      <div>
+        <a href="#" class="logo footer-logo">
+          <span class="pixel-text pixel-cyan">PIXEL</span><span class="pixel-text pixel-pink">.FORGE</span>
+        </a>
+        <p class="pixel-text small footer-copy">© 2026 ВСЕ ПРАВА ЗАЩИЩЕНЫ</p>
+      </div>
+      <div>
+        <h4 class="pixel-text small">НАВИГАЦИЯ</h4>
+        <ul>
+          <li><a href="#portfolio" class="pixel-text small">КЕЙСЫ</a></li>
+          <li><a href="#pricing" class="pixel-text small">ТАРИФЫ</a></li>
+          <li><a href="#faq" class="pixel-text small">FAQ</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4 class="pixel-text small">КОНТАКТЫ</h4>
+        <p><a href="mailto:dark.tanyans777@gmail.com" class="pixel-text small">dark.tanyans777@gmail.com</a></p>
+        <p><a href="https://t.me/Dark_Tanyan" class="pixel-text small">TELEGRAM</a></p>
+        <p><a href="https://t.me/Baba_klava29" class="pixel-text small">TELEGRAM(МОЁ ВТОРОЕ Я)</a></p>
+      </div>
+    </div>
+    <div class="footer-pixel-border"></div>
+  </footer>
+
+    <div class="custom-cursor cursor-dot"></div>
+    <div class="custom-cursor cursor-ring"></div>
+  <script src="js/main.js"></script>
+  <script src="js/cursor.js"></script>
+  <script src="js/cms-loader.js"></script>
+</body>
+</html>
