@@ -1,0 +1,36 @@
+# ============================================
+# НАСТРОЙКИ DEPLOY ДЛЯ NETLIFY
+# ============================================
+
+[build]
+  # Папка с сайтом (точка = корень репозитория)
+  publish = "."
+  # Команда сборки (не нужна для статического сайта)
+  command = "echo '✅ Static site deployed'"
+
+# Заголовки безопасности для админки
+[[headers]]
+  for = "/admin/*"
+  [headers.values]
+    X-Frame-Options = "DENY"
+    X-XSS-Protection = "1; mode=block"
+    Content-Security-Policy = "default-src 'self' 'unsafe-inline' 'unsafe-eval' https://unpkg.com https://identity.netlify.com"
+
+# Перенаправления для чистых URL (опционально)
+[[redirects]]
+  from = "/portfolio/*"
+  to = "/portfolio.html"
+  status = 200
+  force = false
+
+[[redirects]]
+  from = "/services/*"
+  to = "/services.html"
+  status = 200
+  force = false
+
+# 404 страница
+[[redirects]]
+  from = "/*"
+  to = "/404.html"
+  status = 404
