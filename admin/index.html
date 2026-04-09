@@ -35,5 +35,19 @@
 <body>
   <!-- Контейнер для CMS -->
   <div id="nc-root"></div>
+
+  <script>
+  // Ждём полной загрузки DOM
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initCMS);
+  } else {
+    initCMS();
+  }
+  
+  function initCMS() {
+    console.log('Decap CMS initializing...');
+    // CMS автоматически инициализируется, если подключён скрипт
+  }
+</script>
 </body>
 </html>
