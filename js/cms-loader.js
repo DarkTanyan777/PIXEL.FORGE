@@ -175,7 +175,7 @@ const CMSLoader = {
       // Извлекаем репо из текущего домена (если возможно)
       // Или используем статический список
       const knownFiles = {
-        'portfolio': ['crypto-dash', 'neon-plants', 'cyber-security', 'pixel-war', 'star44'],
+        'portfolio': ['crypto-dash-1', 'neon-plants', 'cyber-security', 'pixel-war', 'star44'],
         'services': ['landing', 'shop', 'corp', 'support']
       };
       
