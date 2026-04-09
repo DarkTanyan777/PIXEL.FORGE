@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>PIXEL.FORGE — CMS</title>
+  <!-- Подключаем Decap CMS -->
+  <script src="https://unpkg.com/decap-cms@^3.0.0/dist/decap-cms.js"></script>
+  <style>
+    /* Киберпанк-стиль для админки */
+    :root {
+      --cyber-bg: #0a0a1a;
+      --cyber-cyan: #00f0ff;
+      --cyber-pink: #ff2a75;
+    }
+    body {
+      background: var(--cyber-bg);
+      font-family: 'Courier New', monospace;
+    }
+    .nc-root {
+      background: var(--cyber-bg) !important;
+      color: #e0e0ff !important;
+    }
+    .nc-btn-primary {
+      background: var(--cyber-cyan) !important;
+      color: #0a0a1a !important;
+      border: 2px solid var(--cyber-cyan) !important;
+    }
+    .nc-btn-primary:hover {
+      background: transparent !important;
+      color: var(--cyber-cyan) !important;
+    }
+  </style>
+</head>
+<body>
+  <!-- CMS загрузится сюда -->
+</body>
+</html>
